@@ -77,7 +77,7 @@ class AudioDataset(torch.utils.data.Dataset):
                  sr=24000,
                  range=(1, 30), # length of the audio duration in seconds
                  ):
-        
+        super().__init__()
         with open(path, "r") as f:
             self.data_list = [l.strip() for l in f.readlines()]
         self.data_list = [] # read your list path here
