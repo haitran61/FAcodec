@@ -35,6 +35,8 @@ from audiotools import AudioSignal
 import nemo.collections.asr as nemo_asr
 import glob
 
+from tqdm import tqdm
+
 
 logger = get_logger(__name__, log_level="INFO")
 # torch.autograd.set_detect_anomaly(True)
@@ -61,6 +63,8 @@ def main(args):
     batch_length = config.get('batch_length', 120)
     device = accelerator.device if accelerator.num_processes > 1 else torch.device('cpu')
 
+    print(device)
+
     epochs = config.get('epochs', 200)
     log_interval = config.get('log_interval', 10)
     saving_epoch = config.get('save_freq', 2)
@@ -80,6 +84,7 @@ def main(args):
     norm_f0 = config['model_params'].get('norm_f0', True)
     frame_rate = sr // hop_length
 
+    print("DataLoader...")
     train_dataloader = build_dataloader(train_path, batch_size=batch_size,
                                         num_workers=4,
                                         rank=accelerator.local_process_index,
@@ -168,7 +173,7 @@ def main(args):
         # train_dataloader.set_epoch(epoch)
         _ = [model[key].train() for key in model]
         last_time = time.time()
-        for i, batch in enumerate(train_dataloader):
+        for i, batch in tqdm(enumerate(train_dataloader)):
             optimizer.zero_grad()
             # torch.save(batch, f"latest_batch_{device}.pt")
             # train time count start
