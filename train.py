@@ -50,8 +50,8 @@ def main(args):
     shutil.copy(config_path, osp.join(log_dir, osp.basename(config_path)))
     ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True, broadcast_buffers=True)
     accelerator = Accelerator(project_dir=log_dir, split_batches=True, kwargs_handlers=[ddp_kwargs])
-    if accelerator.is_main_process:
-        writer = SummaryWriter(log_dir + "/tensorboard")
+    # if accelerator.is_main_process:
+    writer = SummaryWriter(log_dir + "/tensorboard")
 
     # write logs
     file_handler = logging.FileHandler(osp.join(log_dir, 'train.log'))
@@ -176,7 +176,7 @@ def main(args):
         # train_dataloader.set_epoch(epoch)
         _ = [model[key].train() for key in model]
         last_time = time.time()
-        for i, batch in enumerate(train_dataloader):
+        for i, batch in enumerate(tqdm(train_dataloader)):
             optimizer.zero_grad()
             # torch.save(batch, f"latest_batch_{device}.pt")
             # train time count start
