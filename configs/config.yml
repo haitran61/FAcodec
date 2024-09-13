@@ -1,6 +1,6 @@
 log_dir: "Models/run_timbre_norm_ctc_titanet/"
 save_freq: 1
-log_interval: 10
+log_interval: 50
 save_interval: 1000
 device: "cuda"
 epochs: 1000 # number of epochs for first stage training (pre-training)

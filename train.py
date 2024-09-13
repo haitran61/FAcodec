@@ -168,12 +168,15 @@ def main(args):
     ).to(device)
     l1_criterion = L1Loss().to(device)
 
+    print(len(train_dataloader))
+
     for epoch in range(start_epoch, epochs):
+        print("Epoch", epoch)
         start_time = time.time()
         # train_dataloader.set_epoch(epoch)
         _ = [model[key].train() for key in model]
         last_time = time.time()
-        for i, batch in tqdm(enumerate(train_dataloader)):
+        for i, batch in enumerate(train_dataloader):
             optimizer.zero_grad()
             # torch.save(batch, f"latest_batch_{device}.pt")
             # train time count start
@@ -384,7 +387,7 @@ def main(args):
             # train time count end
             train_time_per_step = time.time() - train_start_time
 
-            if iters % log_interval == 0 and accelerator.is_main_process:
+            if iters % log_interval == 0:
                 with torch.no_grad():
                     cur_lr = optimizer.schedulers['encoder'].get_last_lr()[0] if i != 0 else 0
                     # log print and tensorboard
