@@ -13,7 +13,7 @@ load_only_params: False # set to true if do not want to load epoch numbers and o
 F0_path: "modules/JDC/bst.t7"
 
 data_params:
-  train_data: "/kaggle/input/train.txt"
+  train_data: "/kaggle/working/train.txt"
   val_data: "/kaggle/input/val.txt"
   root_path: "./data/"
 
