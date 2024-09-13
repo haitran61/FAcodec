@@ -71,6 +71,32 @@ class PseudoDataset(torch.utils.data.Dataset):
         return wave, mel
 
 
+class AudioDataset(torch.utils.data.Dataset):
+    def __init__(self,
+                 path,
+                 sr=24000,
+                 range=(1, 30), # length of the audio duration in seconds
+                 ):
+        
+        with open(path, "r") as f:
+            self.data_list = [l.strip() for l in f.readlines()]
+        self.data_list = [] # read your list path here
+        self.sr = sr
+        self.duration_range = range
+
+    def __len__(self):
+        # return len(self.data_list)
+        return len(self.data_list) # return a fixed number for testing
+
+    def __getitem__(self, idx):
+        # replace this with your own data loading
+        wave, sr = librosa.load(self.data_list[idx], sr=self.sr)
+        wave = wave / np.max(np.abs(wave))
+        mel = preprocess(wave).squeeze(0)
+        wave = torch.from_numpy(wave).float()
+        return wave, mel
+
+
 def collate(batch):
     # batch[0] = wave, mel, text, f0, speakerid
     batch_size = len(batch)
@@ -101,13 +127,14 @@ def collate(batch):
 
 
 def build_dataloader(
+    path,
     rank=0,
     world_size=1,
     batch_size=32,
     num_workers=0,
     prefetch_factor=16,
 ):
-    dataset = PseudoDataset() # replace this with your own dataset
+    dataset = AudioDataset(path) # replace this with your own dataset
     collate_fn = collate
     sampler = torch.utils.data.distributed.DistributedSampler(
         dataset,

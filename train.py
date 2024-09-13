@@ -80,7 +80,7 @@ def main(args):
     norm_f0 = config['model_params'].get('norm_f0', True)
     frame_rate = sr // hop_length
 
-    train_dataloader = build_dataloader(batch_size=batch_size,
+    train_dataloader = build_dataloader(train_path, batch_size=batch_size,
                                         num_workers=4,
                                         rank=accelerator.local_process_index,
                                         world_size=accelerator.num_processes,
