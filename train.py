@@ -92,8 +92,8 @@ def main(args):
         pitch_extractor = load_F0_models(config['F0_path']).to(device)
 
         # load model and processor
-        w2v_processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-xlsr-53-espeak-cv-ft")
-        w2v_model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-xlsr-53-espeak-cv-ft").to(device)
+        w2v_processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
+        w2v_model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h").to(device)
         w2v_model.eval()
 
         speaker_model = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained("nvidia/speakerverification_en_titanet_large")
