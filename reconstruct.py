@@ -35,6 +35,7 @@ def load_model(args):
         for n, p in ckpt_params[key].items():
             if n.startswith("module."):
                 n = n[7:]
+            print(n)
             _params[n] = p
         model[key].load_state_dict(_params)
 
