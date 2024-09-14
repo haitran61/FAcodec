@@ -1,4 +1,4 @@
-log_dir: "Models/run_timbre_norm_ctc_titanet/"
+log_dir: "./logdir/"
 save_freq: 1
 log_interval: 50
 save_interval: 1000
