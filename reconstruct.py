@@ -31,7 +31,12 @@ def load_model(args):
     ckpt_params = ckpt_params['net'] if 'net' in ckpt_params else ckpt_params # adapt to format of self-trained checkpoints
 
     for key in ckpt_params:
-        model[key].load_state_dict(ckpt_params[key])
+        _params = {}
+        for n, p in ckpt_params[key].items():
+            if n.startswith("module."):
+                n = n[7:]
+            _params[n] = p
+        model[key].load_state_dict(_params)
 
     _ = [model[key].eval() for key in model]
     _ = [model[key].to(device) for key in model]
