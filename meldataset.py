@@ -81,6 +81,9 @@ class AudioDataset(torch.utils.data.Dataset):
         with open(path, "r") as f:
             self.data_list = [l.strip() for l in f.readlines()]
         self.data_list = self.data_list[:256]
+
+        for f in self.data_list:
+            print(f)
         self.sr = sr
         self.duration_range = range
 
